@@ -49,64 +49,57 @@ public class Team {
         this.fullSupport = fullSupport;
     }
 
-    public void setPlayer(Player gamer, String role) {
-        Player player = new Player(gamer.getNick(),
-                gamer.getMmr(),
-                gamer.isFullSupport(),
-                gamer.isSupport(),
-                gamer.isMid(),
-                gamer.isCarry(),
-                gamer.isHardLine());
+    public void setPlayer(Player player, String role) {
         try {
 
             switch (role) {
                 case ("Carry"): {
                     if (this.carry == null) {
                         this.carry = player;
-                        break;
                     } else {
                         assert this.carry != null;
                         System.out.println("Роль \"carry\" уже заполнена игроком" + this.carry.getNick());
                     }
+                    break;
                 }
                 case ("Mid"): {
                     if (this.mid == null) {
                         this.mid = player;
-                        break;
                     } else {
                         assert this.mid != null;
                         System.out.println("Роль \"mid\" уже заполнена игроком" + this.mid.getNick());
                     }
+                    break;
                 }
                 case ("HardLine"): {
                     if (this.hardLine == null) {
                         this.hardLine = player;
-                        break;
                     } else {
                         assert this.hardLine != null;
                         System.out.println("Роль \"hardLane\" уже заполнена игроком" + this.hardLine.getNick());
                     }
+                    break;
                 }
                 case ("Support"): {
                     if (this.support == null) {
                         this.support = player;
-                        break;
                     } else {
                         assert this.support != null;
                         System.out.println("Роль \"support\" уже заполнена игроком" + this.support.getNick());
                     }
+                    break;
                 }
                 case ("FullSupport"): {
                     if (getFullSupport() == null) {
                         this.fullSupport = player;
-                        break;
                     } else {
                         assert this.fullSupport != null;
                         System.out.println("Роль \"fullSupport\" уже заполнена игроком" + this.fullSupport.getNick());
                     }
+                    break;
                 }
                 default: {
-                    throw new UnAvailableRoleException("Выбраная роль не существует! "+role );
+                    throw new UnAvailableRoleException("Выбраная роль не существует! " + role);
                 }
             }
         } catch (UnAvailableRoleException e) {
@@ -135,4 +128,17 @@ public class Team {
         }
         throw new UnAvailableRoleException("В команде не обнаруженно подобного варианта роли.");
     }
+
+    public void printTeam() {
+        System.out.println("1. carry: " + carry.getNick() + " " + carry.getMmr());
+        System.out.println("2. mid: " + mid.getNick() + " " + mid.getMmr());
+        System.out.println("3. hardLine: " + hardLine.getNick() + " " + hardLine.getMmr());
+        System.out.println("4. support: " + support.getNick() + " " + support.getMmr());
+        System.out.println("5. fullSupport: " + fullSupport.getNick() + " " + fullSupport.getMmr());
+    }
+
+    public int getSumOfMmr() {
+        return carry.getMmr() + mid.getMmr() + hardLine.getMmr() + support.getMmr() + fullSupport.getMmr();
+    }
+
 }

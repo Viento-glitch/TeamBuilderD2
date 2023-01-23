@@ -83,47 +83,36 @@ public class TeamMaker {
             Team radiant = new Team();
             Team dire = new Team();
 
-            Random random = new Random();
-            boolean isfirstRadiant = random.nextBoolean();
-            for (int j = 0; j < counters.size(); j++) {
-                for (int i = players.size() - 1; i >= 0; i--) {
-                    Counter counter = counters.get(j);
-                    if (radiant.isAlreadyHaveRole(counter.role) && dire.isAlreadyHaveRole(counter.role)) {
-                        continue;
-                    }
-
-                    Player player = players.get(i);
-                    System.out.println(player.getNick());
-                    if (player.checkRole(counter.role)) {
-                        if (isfirstRadiant) {
-                            radiant.setPlayer(player, counter.role);
-                        } else {
-                            dire.setPlayer(player, counter.role);
+            for (int i = 0; i < counters.size(); i++) {
+                Counter counter = counters.get(i);
+                for (int j = 0; j < 2; j++) {
+//                    System.out.println(counter.role);
+                    for (int k = players.size() - 1; k >= 0; k--) {
+                        if (players.get(i).checkRole(counter.role)) {
+                            if (!radiant.isAlreadyHaveRole(counter.role)) {
+                                System.out.println("Свет");
+                                System.out.println(players.get(k).getNick());
+                                radiant.setPlayer(players.get(k), counter.role);
+                            } else if (!dire.isAlreadyHaveRole(counter.role)) {
+                                dire.setPlayer(players.get(k), counter.role);
+                                System.out.println("Тьма");
+                                System.out.println(players.get(k).getNick());
+                            }
+                            int globalSumOfMmr = radiant.getSumOfMmr();
                         }
                     }
-                    players.remove(i);
-
-
-//                    if (isfirstRadiant) {
-//                        radiant.setPlayer(players.get(i));
-//                    } else {
-//                        dire.setPlayer(players.get(i));
-//                    }
-
-                    if (counter.countOfRole == 0) continue;
-                    counter.countOfRole--;
                 }
-
             }
-            if (isfirstRadiant) {
+//            radiant.printTeam();
+//            System.out.println(globalSumOfMmr);
+//            dire.printTeam();
+//            System.out.println(dire.getSumOfMmr());
+//            globalSumOfMmr -= dire.getSumOfMmr();
+//            System.out.println("разница в сумме ммр " + globalSumOfMmr);
 
-            } else {
 
-            }
-
-            //todo проверить рабостоспособность сортировки игроков по ммр
-
-
+            Random random = new Random();
+            boolean isFirstRadiant = random.nextBoolean();
         }
 
 

@@ -16,16 +16,16 @@ class TeamBuilder {
 //        addNewPlayer("SADSADSADSADSADSADSAD", 3520);
 //        addNewPlayer("catinho", 2420);
 //        addNewPlayer("Laugh_tale", 2000);
-        addNewPlayer("Настя_ивлеева", 3030, false, false, false, false, false);
-        addNewPlayer("Ден4ик", 4500, false, false, false, false, false);
-        addNewPlayer("(Сергей){Sent!nel}", 1670, false, true, false, false, false);
-        addNewPlayer("Ксюша.XXL(Андрей)", 1500, false, false, false, false, false);
-        addNewPlayer("Медузник", 2150, false, false, false, false, false);
-        addNewPlayer("DIABLO", 2240, false, false, false, false, false);
-        addNewPlayer("Юрод", 1200, false, false, false, false, false);
-        addNewPlayer("Аня.XXL", 990, false, false, false, false, false);
-        addNewPlayer("wrotking", 1280, false, false, false, false, false);
-        addNewPlayer("DIN-", 3190, false, false, false, false, false);
+//        addNewPlayer("Настя_ивлеева", 3030, false, false, false, false, false);
+//        addNewPlayer("Ден4ик", 4500, false, false, false, false, false);
+//        addNewPlayer("(Сергей){Sent!nel}", 1670, false, true, false, false, false);
+//        addNewPlayer("Ксюша.XXL(Андрей)", 1500, false, false, false, false, false);
+//        addNewPlayer("Медузник", 2150, false, false, false, false, false);
+//        addNewPlayer("DIABLO", 2240, false, false, false, false, false);
+//        addNewPlayer("Юрод", 1200, false, false, false, false, false);
+//        addNewPlayer("Аня.XXL", 990, false, false, false, false, false);
+//        addNewPlayer("wrotking", 1280, false, false, false, false, false);
+//        addNewPlayer("DIN-", 3190, false, false, false, false, false);
 
 //        readPlayers(players);
 
@@ -49,9 +49,9 @@ class TeamBuilder {
 
     }
 
-    private static void addNewPlayer(String nick,int mmr,boolean roleFullSupport,boolean roleHardLaneSupport,boolean mid,boolean carry,boolean hardLane) {
-        players.add(new Player(nick, mmr, roleFullSupport, roleHardLaneSupport, mid, carry, hardLane));
-    }
+//    private static void addNewPlayer(String nick,int mmr,boolean roleFullSupport,boolean roleHardLaneSupport,boolean mid,boolean carry,boolean hardLane) {
+//        players.add(new Player(nick, mmr, roleFullSupport, roleHardLaneSupport, mid, carry, hardLane));
+//    }
 
 
 //    private static void readPlayers(ArrayList<Player> players) {

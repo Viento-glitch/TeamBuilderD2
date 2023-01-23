@@ -2,6 +2,8 @@ package org.example;
 
 import local.exceptions.UnAvailableRoleException;
 
+import static org.example.PlayerType.*;
+
 public class Team {
     private Player carry;
     private Player mid;
@@ -49,82 +51,84 @@ public class Team {
         this.fullSupport = fullSupport;
     }
 
-    public void setPlayer(Player player, String role) {
-        try {
-
-            switch (role) {
-                case ("Carry"): {
-                    if (this.carry == null) {
-                        this.carry = player;
-                    } else {
-                        assert this.carry != null;
-                        System.out.println("Роль \"carry\" уже заполнена игроком" + this.carry.getNick());
-                    }
-                    break;
-                }
-                case ("Mid"): {
-                    if (this.mid == null) {
-                        this.mid = player;
-                    } else {
-                        assert this.mid != null;
-                        System.out.println("Роль \"mid\" уже заполнена игроком" + this.mid.getNick());
-                    }
-                    break;
-                }
-                case ("HardLine"): {
-                    if (this.hardLine == null) {
-                        this.hardLine = player;
-                    } else {
-                        assert this.hardLine != null;
-                        System.out.println("Роль \"hardLane\" уже заполнена игроком" + this.hardLine.getNick());
-                    }
-                    break;
-                }
-                case ("Support"): {
-                    if (this.support == null) {
-                        this.support = player;
-                    } else {
-                        assert this.support != null;
-                        System.out.println("Роль \"support\" уже заполнена игроком" + this.support.getNick());
-                    }
-                    break;
-                }
-                case ("FullSupport"): {
-                    if (getFullSupport() == null) {
-                        this.fullSupport = player;
-                    } else {
-                        assert this.fullSupport != null;
-                        System.out.println("Роль \"fullSupport\" уже заполнена игроком" + this.fullSupport.getNick());
-                    }
-                    break;
-                }
-                default: {
-                    throw new UnAvailableRoleException("Выбраная роль не существует! " + role);
-                }
+    public void setPlayer(Player player, PlayerType type) {
+//        try {
+        if (type == CARRY) {
+            if (getCarry() == null) {
+                this.carry = player;
+            } else {
+                assert this.carry != null;
+                System.out.println("Роль \"carry\" уже заполнена игроком " + this.carry.getNick());
             }
-        } catch (UnAvailableRoleException e) {
-            throw new RuntimeException(e);
+        }
+        if (type == MID) {
+            if (getMid() == null) {
+                this.mid = player;
+            } else {
+                assert this.mid != null;
+                System.out.println("Роль \"mid\" уже заполнена игроком " + this.mid.getNick());
+            }
+        }
+        if (type == HARDLINE) {
+            if (getHardLine() == null) {
+                this.hardLine = player;
+            } else {
+                assert this.hardLine != null;
+                System.out.println("Роль \"hardLane\" уже заполнена игроком " + this.hardLine.getNick());
+            }
+        }
+        if (type == SUPPORT) {
+            if (getSupport() == null) {
+                this.support = player;
+            } else {
+                assert this.support != null;
+                System.out.println("Роль \"support\" уже заполнена игроком " + this.support.getNick());
+            }
+        }
+        if (type == FULLSUPPORT) {
+            if (getFullSupport() == null) {
+                this.fullSupport = player;
+            } else {
+                assert this.fullSupport != null;
+                System.out.println("Роль \"fullSupport\" уже заполнена игроком " + this.fullSupport.getNick());
+            }
         }
     }
 
-    public boolean isAlreadyHaveRole(String role) throws UnAvailableRoleException {
-        switch (role) {
-            case ("Carry"): {
-                return !(carry == null);
-            }
-            case ("Mid"): {
-                return !(mid == null);
-            }
-            case ("HardLine"): {
-                return !(hardLine == null);
-            }
-            case ("Support"): {
-                return !(support == null);
-            }
-            case ("FullSupport"): {
-                return !(fullSupport == null);
-            }
+    public boolean isFull() {
+        if (carry == null) {
+            return false;
+        }
+        if (mid == null) {
+            return false;
+        }
+        if (hardLine == null) {
+            return false;
+        }
+        if (support == null) {
+            return false;
+        }
+        if (fullSupport == null) {
+            return false;
+        }
+        return true;
+    }
 
+    public boolean isAlreadyHaveRole(PlayerType type) throws UnAvailableRoleException {
+        if (type == CARRY) {
+            return (carry != null);
+        }
+        if (type == MID) {
+            return (mid != null);
+        }
+        if (type == HARDLINE) {
+            return (hardLine != null);
+        }
+        if (type == SUPPORT) {
+            return (support != null);
+        }
+        if (type == FULLSUPPORT) {
+            return (fullSupport != null);
         }
         throw new UnAvailableRoleException("В команде не обнаруженно подобного варианта роли.");
     }

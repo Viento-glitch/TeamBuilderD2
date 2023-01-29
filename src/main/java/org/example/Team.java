@@ -2,6 +2,9 @@ package org.example;
 
 import local.exceptions.UnAvailableRoleException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.example.PlayerType.*;
 
 public class Team {
@@ -10,6 +13,23 @@ public class Team {
     private Player hardLine;
     private Player support;
     private Player fullSupport;
+    List<PlayerType> alreadyHaveRole = new ArrayList<>();
+
+    public int getSumOfMMR() {
+        int result = 0;
+        if (carry != null) result += carry.getMmr();
+        if (mid != null) result += mid.getMmr();
+        if (hardLine != null) result += hardLine.getMmr();
+        if (support != null) result += support.getMmr();
+        if (fullSupport != null) result += fullSupport.getMmr();
+        return result;
+    }
+
+
+    public int calcPotentialIfAddPlayerToTeam(Player player) {
+        if (!this.isFull()) return getSumOfMMR() + player.getMmr();
+        else return 0;
+    }
 
     public Player getCarry() {
         return carry;
@@ -140,9 +160,4 @@ public class Team {
         System.out.println("4. support: " + support.getNick() + " " + support.getMmr());
         System.out.println("5. fullSupport: " + fullSupport.getNick() + " " + fullSupport.getMmr());
     }
-
-    public int getSumOfMmr() {
-        return carry.getMmr() + mid.getMmr() + hardLine.getMmr() + support.getMmr() + fullSupport.getMmr();
-    }
-
 }

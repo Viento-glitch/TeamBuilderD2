@@ -30,17 +30,16 @@ public class TeamMaker {
 //        players.add(new Player("(Артур)KOT", 4000, Arrays.asList(MID, CARRY, SUPPORT)));
 
         //todo delete \/  fake
-//        players.add(new Player("(Андрей)Ксюша.XXL", 1350, Arrays.asList(FULLSUPPORT)));
         players.add(new Player("(Андрей)Ксюша.XXL", 1350, Arrays.asList(FULLSUPPORT)));
         players.add(new Player("(Антон)91", 1520, Arrays.asList(FULLSUPPORT)));
         players.add(new Player("(Амина)Ketsueki", 1600, Arrays.asList(SUPPORT)));
         players.add(new Player("(Сергей){Sent!nel}", 1670, Arrays.asList(SUPPORT)));
         players.add(new Player("(Андрей)DIABLO", 2000, Arrays.asList(HARDLINE)));
-        players.add(new Player("(Стас)HAPPY", 2200, Arrays.asList(HARDLINE)));
-        players.add(new Player("(Данила)1mpact", 2500, Arrays.asList(MID)));
-        players.add(new Player("(Айдар)   ", 3200, Arrays.asList(MID)));
-        players.add(new Player("(Саня)нота", 4000, Arrays.asList(CARRY)));
-        players.add(new Player("(Артур)KOT", 4000, Arrays.asList(CARRY)));
+        players.add(new Player("(Стас)HAPPY", 2200, Arrays.asList(HARDLINE, FULLSUPPORT,SUPPORT)));
+        players.add(new Player("(Данила)1mpact", 2500, Arrays.asList(MID, FULLSUPPORT,HARDLINE)));
+        players.add(new Player("(Айдар)   ", 3200, Arrays.asList(MID, SUPPORT,FULLSUPPORT)));
+        players.add(new Player("(Саня)нота", 4000, Arrays.asList(CARRY, SUPPORT,FULLSUPPORT)));
+        players.add(new Player("(Артур)KOT", 4000, Arrays.asList(CARRY, HARDLINE,SUPPORT)));
 
 
         //        System.out.println(players.size());
@@ -59,16 +58,57 @@ public class TeamMaker {
         List<Player> readyToDistributionListOfPlayers = new ArrayList<>();
         List<Player> listWithApology = new ArrayList<>();
 
-        int roles;
         while (true) {
-            for (roles = 0; roles < 5; roles++) {
+            Collections.sort(players);
+
+            final int countOfRole = 5;
+            long[] roles = new long[countOfRole];
+            long carry = players.stream().filter(player -> player.types.contains(CARRY)).count();
+            roles[0] = carry;
+            long mid = players.stream().filter(player -> player.types.contains(MID)).count();
+            roles[1] = mid;
+            long hardLine = players.stream().filter(player -> player.types.contains(HARDLINE)).count();
+            roles[2] = hardLine;
+            long support = players.stream().filter(player -> player.types.contains(SUPPORT)).count();
+            roles[3] = support;
+            long fullSupport = players.stream().filter(player -> player.types.contains(FULLSUPPORT)).count();
+            roles[4] = fullSupport;
+
+            for (int i = 0; i < countOfRole; i++) {
+                PlayerType typeOfRole = null;
+                switch (i) {
+                    case (0): {
+                        typeOfRole = CARRY;
+                        break;
+                    }
+                    case (1): {
+                        typeOfRole = MID;
+                        break;
+                    }
+                    case (2): {
+                        typeOfRole = HARDLINE;
+                        break;
+                    }
+                    case (3): {
+                        typeOfRole = SUPPORT;
+                        break;
+                    }
+                    case (4): {
+                        typeOfRole = FULLSUPPORT;
+                        break;
+                    }
+
+                }
+                findUniqueRoles(players, readyToDistributionListOfPlayers, roles, i, typeOfRole);
+            }
+            for (int i = 0; i < 5; i++) {
                 int countOfFinedPlayers = 0;
-                for (int playersI = players.size() - 1; playersI >= 0; playersI--) {
-                    if (matrix[playersI][roles] != 0) {
+                for (int j = players.size() - 1; j >= 0; j--) {
+                    if (matrix[j][i] != 0) {
                         countOfFinedPlayers++;
-                        players.get(playersI).setPlayerRole(roles);
-                        readyToDistributionListOfPlayers.add(players.get(playersI));
-                        players.remove(playersI);
+                        players.get(j).setPlayerRole(i);
+                        readyToDistributionListOfPlayers.add(players.get(j));
+                        players.remove(j);
                     }
                     if (countOfFinedPlayers == 2) {
                         break;
@@ -87,14 +127,48 @@ public class TeamMaker {
             System.out.println(readyToDistributionListOfPlayers.get(i).getPlayerRole());
         }
 
-        
+        //todo распределение по командам{}
+
+        Team radiant = new Team();
+        Team dire = new Team();
 
 
+        int sumOfMMrRadiant = 0;
+        int sumOfMMrDire = 0;
+        while (true) {
+            if (!radiant.isFull() || !dire.isFull()) {
+                for (int i = readyToDistributionListOfPlayers.size() - 1; i >= 0; i--) {
+                    Player player = readyToDistributionListOfPlayers.get(i);
 
+                    int radPotential = sumOfMMrRadiant + player.getMmr();
+                    int direPotential = sumOfMMrDire + player.getMmr();
+                    if (radPotential < direPotential) {
+                        if (!radiant.isFull() && !radiant.isAlreadyHaveRole(player.getPlayerRole())) {
+                            radiant.setPlayer(player, player.getPlayerRole());
+                        } else if (!dire.isFull() && !dire.isAlreadyHaveRole(player.getPlayerRole())) {
+                            dire.setPlayer(player, player.getPlayerRole());
+                        }
+                    } else if (!dire.isFull() && !dire.isAlreadyHaveRole(player.getPlayerRole())) {
+                        dire.setPlayer(player, player.getPlayerRole());
+                    } else if (!radiant.isFull() && !radiant.isAlreadyHaveRole(player.getPlayerRole())) {
+                        radiant.setPlayer(player, player.getPlayerRole());
+                    }
+                }
+            } else {
+                break;
+            }
+        }
 
-
-
-
+        {
+            radiant.printTeam();
+            System.out.println("Суммарный ммр команды ALPHA " + radiant.getSumOfMMR());
+            System.out.println();
+            dire.printTeam();
+            System.out.println("Суммарный ммр команды BETA " + dire.getSumOfMMR());
+            System.out.println();
+            System.out.println("Разница в ммр между командами " + getModuleOfSum(radiant.getSumOfMMR(), dire.getSumOfMMR()));
+            System.out.println();
+        }
 
         apology(listWithApology);
 
@@ -126,8 +200,29 @@ public class TeamMaker {
 //        }
     }
 
+    private static void findUniqueRoles(List<Player> players, List<Player> readyToDistributionListOfPlayers, long[] roles, int i, PlayerType typeOfRole) {
+        if (roles[i] == 2) {
+            for (int j = 0; j < 2; j++) {
+                int countOfFinedPlayers = 0;
+                for (int k = 0; k < players.size(); k++) {
+                    Player player = players.get(k);
+
+                    if (player.types.contains(typeOfRole)) {
+                        countOfFinedPlayers++;
+                        player.setPlayerRole(typeOfRole);
+                        readyToDistributionListOfPlayers.add(players.get(k));
+                        players.remove(player);
+                    }
+                    if (countOfFinedPlayers == 2) {
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
     private static void apology(List<Player> listWithApology) {
-        if(!listWithApology.isEmpty()){
+        if (!listWithApology.isEmpty()) {
             System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             System.out.println("Приносим свои извинения игрокам");
             for (int i = 0; i < listWithApology.size(); i++) {
